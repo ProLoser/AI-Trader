@@ -27,11 +27,11 @@ def execute_approved_trades(sheets_manager, alpaca_client):
     
     for _, trade in approved_trades.iterrows():
         ticker = trade['Ticker']
-        action = trade['Action'].lower()
+        action_str = str(trade['Action']).lower()
         quantity = int(trade['Quantity'])
         
         # Determine order side
-        side = 'buy' if action == 'buy' else 'sell'
+        side = 'buy' if action_str == 'buy' else 'sell'
         
         # Submit order
         order = alpaca_client.submit_order(
@@ -43,7 +43,7 @@ def execute_approved_trades(sheets_manager, alpaca_client):
         if order:
             executed.append({
                 'Ticker': ticker,
-                'Action': action,
+                'Action': action_str,
                 'Quantity': quantity,
                 'Status': 'Executed',
                 'OrderId': order.id,
@@ -52,7 +52,7 @@ def execute_approved_trades(sheets_manager, alpaca_client):
         else:
             executed.append({
                 'Ticker': ticker,
-                'Action': action,
+                'Action': action_str,
                 'Quantity': quantity,
                 'Status': 'Failed',
                 'OrderId': None,

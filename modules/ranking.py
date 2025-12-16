@@ -75,8 +75,10 @@ def identify_sell_candidates(current_positions, ranked_df, rank_threshold=20):
         if ticker_rank.empty:
             # Ticker not in universe anymore - sell
             sell_candidates.append(ticker)
-        elif ticker_rank['Rank'].iloc[0] > rank_threshold:
-            # Poor ranking - sell
-            sell_candidates.append(ticker)
+        elif 'Rank' in ticker_rank.columns and not ticker_rank.empty:
+            rank_value = ticker_rank['Rank'].iloc[0]
+            if rank_value > rank_threshold:
+                # Poor ranking - sell
+                sell_candidates.append(ticker)
     
     return sell_candidates

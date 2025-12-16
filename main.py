@@ -88,12 +88,18 @@ def generate_trade_suggestions(ranked_df, current_positions, account_value, allo
             atr_data = get_atr_for_ticker(alpaca_client, ticker)
             stop_loss = atr_data.get('stop_loss', 'N/A')
             
+            # Format stop loss for display
+            if isinstance(stop_loss, (int, float)):
+                stop_loss_str = f"{stop_loss:.2f}"
+            else:
+                stop_loss_str = str(stop_loss)
+            
             suggestions.append({
                 'Ticker': ticker,
                 'Action': 'BUY',
                 'Quantity': quantity,
                 'Price': f"{price:.2f}",
-                'Reason': f"Rank #{row['Rank']}, Momentum: {row['Momentum_Combined']:.2f}%, Stop: {stop_loss:.2f if isinstance(stop_loss, float) else stop_loss}",
+                'Reason': f"Rank #{row['Rank']}, Momentum: {row['Momentum_Combined']:.2f}%, Stop: {stop_loss_str}",
                 'Approved': 'NO',
                 'Timestamp': datetime.now().isoformat()
             })

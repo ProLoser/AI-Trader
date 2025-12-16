@@ -125,5 +125,5 @@ class AlpacaClient:
         """
         try:
             return self.api.get_position(symbol)
-        except:
+        except Exception:
             return None

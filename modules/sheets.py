@@ -100,6 +100,8 @@ class SheetsManager:
                 return df
             
             # Filter for approved trades (case-insensitive)
+            # Convert to string and handle NaN/None values
+            df['Approved'] = df['Approved'].astype(str)
             approved_df = df[df['Approved'].str.upper() == 'YES'].copy()
             return approved_df
         except gspread.exceptions.WorksheetNotFound:
