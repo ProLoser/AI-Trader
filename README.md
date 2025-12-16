@@ -42,7 +42,16 @@ AI-Trader/
 
 Create a Google Sheet with the following tabs:
 
-### 1. Universe Tab
+### 1. Config Tab
+Configuration settings for the trading system:
+
+| Setting | Value |
+|---------|-------|
+| PortfolioAllocation | 0.5 |
+
+- **PortfolioAllocation**: Percentage of portfolio to allocate per trade (0.5 = 50%)
+
+### 2. Universe Tab
 List of ticker symbols to analyze (one per row):
 
 | Ticker |
@@ -53,14 +62,14 @@ List of ticker symbols to analyze (one per row):
 | AMZN   |
 | ...    |
 
-### 2. TradeSuggestions Tab
+### 3. TradeSuggestions Tab
 Auto-populated with trade suggestions. To approve a trade, change "Approved" from "NO" to "YES":
 
 | Ticker | Action | Quantity | Price | Reason | Approved | Timestamp |
 |--------|--------|----------|-------|--------|----------|-----------|
 | AAPL   | BUY    | 10       | 150.0 | Rank #1| YES      | 2024-... |
 
-### 3. State Tab
+### 4. State Tab
 Auto-populated with position tracking data:
 
 | Ticker | Position | EntryPrice | Peak | ATRStop | LastUpdated |
@@ -116,7 +125,8 @@ Configure the following secrets in your GitHub repository (Settings → Secrets 
 - `ALPACA_BASE_URL` - Alpaca API URL (paper or live)
 - `GOOGLE_SHEET_ID` - Your Google Sheet ID (from the URL)
 - `GOOGLE_CREDENTIALS_JSON` - Contents of your service account JSON file
-- `PORTFOLIO_ALLOCATION` - Portfolio allocation per trade (e.g., 0.5 for 50%)
+
+**Note**: Portfolio allocation is now configured in the Google Sheets 'Config' tab, not as a GitHub secret.
 
 The workflow runs automatically on weekdays at 9:00 AM EST. You can also trigger it manually from the Actions tab.
 
@@ -128,7 +138,12 @@ The workflow runs automatically on weekdays at 9:00 AM EST. You can also trigger
 - `ALPACA_SECRET_KEY` - Alpaca secret key
 - `ALPACA_BASE_URL` - API endpoint (paper: `https://paper-api.alpaca.markets`)
 - `GOOGLE_SHEET_ID` - Google Sheet ID from the URL
-- `PORTFOLIO_ALLOCATION` - Percentage of portfolio per trade (default: 0.5)
+
+### Google Sheets Config Tab
+
+The 'Config' tab in Google Sheets contains trading parameters:
+
+- `PortfolioAllocation` - Percentage of portfolio per trade (default: 0.5 for 50%)
 
 ### Trading Parameters
 

@@ -41,8 +41,7 @@ def load_configuration():
         'alpaca_api_key': os.getenv('ALPACA_API_KEY'),
         'alpaca_secret_key': os.getenv('ALPACA_SECRET_KEY'),
         'alpaca_base_url': os.getenv('ALPACA_BASE_URL', 'https://paper-api.alpaca.markets'),
-        'google_sheet_id': os.getenv('GOOGLE_SHEET_ID'),
-        'portfolio_allocation': float(os.getenv('PORTFOLIO_ALLOCATION', '0.5'))
+        'google_sheet_id': os.getenv('GOOGLE_SHEET_ID')
     }
     
     # Validate required configuration
@@ -196,6 +195,12 @@ def main():
     print("Initializing Google Sheets client...")
     sheets_manager = SheetsManager(sheet_id=config['google_sheet_id'])
     
+    # Read configuration from Google Sheets
+    print("Reading configuration from Google Sheets...")
+    sheet_config = sheets_manager.get_config()
+    portfolio_allocation = float(sheet_config.get('PortfolioAllocation', '0.5'))
+    print(f"Portfolio Allocation: {portfolio_allocation * 100:.0f}%")
+    
     # Get account info
     print("\nFetching account information...")
     account = alpaca_client.get_account()
@@ -239,7 +244,7 @@ def main():
         ranked_df=ranked_df,
         current_positions=current_positions,
         account_value=account_value,
-        allocation_pct=config['portfolio_allocation'],
+        allocation_pct=portfolio_allocation,
         alpaca_client=alpaca_client
     )
     

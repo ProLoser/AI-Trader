@@ -31,6 +31,32 @@ class SheetsManager:
         self.client = gspread.authorize(creds)
         self.spreadsheet = self.client.open_by_key(sheet_id)
     
+    def get_config(self):
+        """
+        Read configuration from the 'Config' worksheet.
+        
+        Expected format:
+        Column A: Setting name (e.g., 'PortfolioAllocation')
+        Column B: Value (e.g., '0.5')
+        
+        Returns:
+            dict: Configuration key-value pairs
+        """
+        try:
+            worksheet = self.spreadsheet.worksheet('Config')
+            data = worksheet.get_all_records()
+            config = {}
+            for row in data:
+                # Assuming columns are 'Setting' and 'Value'
+                setting = row.get('Setting', '').strip()
+                value = row.get('Value', '').strip()
+                if setting and value:
+                    config[setting] = value
+            return config
+        except gspread.exceptions.WorksheetNotFound:
+            print("Warning: 'Config' worksheet not found. Using defaults.")
+            return {}
+    
     def get_universe(self):
         """
         Read trading universe from the 'Universe' worksheet.
