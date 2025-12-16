@@ -198,7 +198,18 @@ def main():
     # Read configuration from Google Sheets
     print("Reading configuration from Google Sheets...")
     sheet_config = sheets_manager.get_config()
-    portfolio_allocation = float(sheet_config.get('PortfolioAllocation', '0.5'))
+    
+    # Get portfolio allocation with validation
+    try:
+        portfolio_allocation = float(sheet_config.get('PortfolioAllocation', 0.5))
+        # Validate range
+        if portfolio_allocation <= 0 or portfolio_allocation > 1:
+            print(f"Warning: Invalid PortfolioAllocation value ({portfolio_allocation}). Using default 0.5")
+            portfolio_allocation = 0.5
+    except (ValueError, TypeError):
+        print(f"Warning: Non-numeric PortfolioAllocation in Config sheet. Using default 0.5")
+        portfolio_allocation = 0.5
+    
     print(f"Portfolio Allocation: {portfolio_allocation * 100:.0f}%")
     
     # Get account info

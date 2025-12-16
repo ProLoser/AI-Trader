@@ -35,9 +35,10 @@ class SheetsManager:
         """
         Read configuration from the 'Config' worksheet.
         
-        Expected format:
-        Column A: Setting name (e.g., 'PortfolioAllocation')
-        Column B: Value (e.g., '0.5')
+        Expected format (sheet must have these exact column headers):
+        | Setting             | Value |
+        |---------------------|-------|
+        | PortfolioAllocation | 0.5   |
         
         Returns:
             dict: Configuration key-value pairs
@@ -47,7 +48,7 @@ class SheetsManager:
             data = worksheet.get_all_records()
             config = {}
             for row in data:
-                # Assuming columns are 'Setting' and 'Value'
+                # Columns must be named 'Setting' and 'Value'
                 setting = row.get('Setting', '').strip()
                 value = row.get('Value', '').strip()
                 if setting and value:
