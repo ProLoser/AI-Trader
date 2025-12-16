@@ -3,7 +3,7 @@ Google Sheets integration module.
 Handles reading configuration/universe and writing trade suggestions and state.
 """
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 import pandas as pd
 import os
 
@@ -25,8 +25,8 @@ class SheetsManager:
             'https://www.googleapis.com/auth/drive'
         ]
         
-        creds = ServiceAccountCredentials.from_json_keyfile_name(
-            credentials_file, scope
+        creds = Credentials.from_service_account_file(
+            credentials_file, scopes=scope
         )
         self.client = gspread.authorize(creds)
         self.spreadsheet = self.client.open_by_key(sheet_id)
